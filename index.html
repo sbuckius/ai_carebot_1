@@ -1,26 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- ✅ Mobile-friendly viewport -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
-  <!-- PLEASE NO CHANGES BELOW THIS LINE (UNTIL I SAY SO) -->
-  <script language="javascript" type="text/javascript" src="libraries/p5.min.js"></script>
-  <script language="javascript" type="text/javascript" src="interactive_bot_absurd.js"></script>
-  <!-- OK, YOU CAN MAKE CHANGES BELOW THIS LINE AGAIN -->
-  
-  <!-- ✅ p5.sound library (REQUIRED for audio) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.min.js"></script>
+  <!-- ✅ Load p5.js core and sound library -->
+  <script src="libraries/p5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.min.js"></script>
 
+  <!-- ✅ Your sketch (place AFTER libraries) -->
+  <script src="interactive_bot_absurd.js"></script>
 
   <style>
-    body {
+    html, body {
       padding: 0;
       margin: 0;
+      overflow: hidden;
+      background: #f0f0f0;
+      font-family: sans-serif;
+    }
+
+    a#reward-link {
+      font-size: 18px;
+      display: block;
+      text-align: center;
+      margin: 20px auto;
+      color: #0000ee;
+      text-decoration: underline;
     }
   </style>
 </head>
 
 <body>
+  <!-- Canvas and reward link will be added dynamically via p5.js -->
 </body>
 </html>
