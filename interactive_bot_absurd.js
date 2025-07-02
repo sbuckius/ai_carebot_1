@@ -26,7 +26,7 @@ let badges = [];
 
 let showLink = false;
 let linkJustUnlocked = false;
-let rewardLink = "https://example.com/next-level"; // Replace with real URL
+let rewardLink = "https://sbuckius.github.io/women_technology_work_quiz/"; // Replace with real URL
 
 let unlockSound;
 let particles = [];
