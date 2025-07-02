@@ -26,14 +26,15 @@ let badges = [];
 
 let showLink = false;
 let linkJustUnlocked = false;
-let rewardLink = "https://sbuckius.github.io/women_technology_work_quiz/"; // Replace with real URL
+let rewardLink = "https://sbuckius.github.io/women_technology_work_quiz/";
 
 let unlockSound;
 let particles = [];
+let linkElem;
 
 function preload() {
   soundFormats('mp3', 'wav');
-  unlockSound = loadSound('hip_hop_beat.mp3'); // Upload this file in the p5.js editor
+  unlockSound = loadSound('hip_hop_beat.mp3');
 }
 
 function setup() {
@@ -45,6 +46,17 @@ function setup() {
   window.speechSynthesis.onvoiceschanged = () => {
     speechSynthesis.getVoices();
   };
+
+  // Create actual clickable link (hidden at first)
+  linkElem = createA(rewardLink, "👉 Go to Secret Page 👈", "_blank");
+  linkElem.id("reward-link");
+  linkElem.hide();
+  linkElem.style("font-size", "18px");
+  linkElem.style("display", "block");
+  linkElem.style("text-align", "center");
+  linkElem.style("margin", "20px auto");
+  linkElem.style("color", "#0000ee");
+  linkElem.style("text-decoration", "underline");
 }
 
 function draw() {
@@ -65,7 +77,7 @@ function draw() {
     text(userResponses[currentResponseIndex], width / 2, height / 2);
 
     fill(120);
-    text("Click to cycle and submit answer", width / 2, height - 50);
+    text("Tap to cycle and submit answer", width / 2, height - 50);
 
     handleTimer();
 
@@ -76,19 +88,15 @@ function draw() {
     text(`AI Bot (${botMood}) replies:`, width / 2, 200);
     text(`"${botReply}"`, width / 2, 250);
     fill(120);
-    text("Click to go to next question", width / 2, height - 50);
+    text("Tap to go to next question", width / 2, height - 50);
   }
 
-  // 🎉 Reward link display
   if (showLink) {
     fill(0, 102, 204);
     textSize(20);
-    text("🎉 You unlocked a bonus! Tap below:", width / 2, height - 120);
-    fill(0, 0, 255);
-    text("👉 Go to Secret Page 👈", width / 2, height - 90);
+    text("🎉 You unlocked a bonus!", width / 2, height - 120);
   }
 
-  // ✨ Particle effect
   for (let i = particles.length - 1; i >= 0; i--) {
     particles[i].update();
     particles[i].show();
@@ -121,16 +129,6 @@ function handleTimer() {
 }
 
 function mousePressed() {
-  // Link click
-  if (
-    showLink &&
-    mouseX > width / 2 - 150 && mouseX < width / 2 + 150 &&
-    mouseY > height - 110 && mouseY < height - 70
-  ) {
-    window.open(rewardLink, "_blank");
-    return;
-  }
-
   let userResponses = userResponsesMap[currentQuestionIndex];
 
   if (gameState === "ask") {
@@ -198,11 +196,16 @@ function updateBadges() {
     linkJustUnlocked = true;
     unlockSound.play();
 
-    // 💥 Start particle burst
+    if (linkElem) linkElem.show();
+
     for (let i = 0; i < 100; i++) {
       particles.push(new Particle(width / 2, height - 100));
     }
   }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
 
 // 🎆 Particle class
