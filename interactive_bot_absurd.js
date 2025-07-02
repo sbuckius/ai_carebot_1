@@ -30,7 +30,6 @@ let rewardLink = "https://sbuckius.github.io/women_technology_work_quiz/";
 
 let unlockSound;
 let particles = [];
-let linkContainer;
 
 function preload() {
   soundFormats('mp3', 'wav');
@@ -46,12 +45,6 @@ function setup() {
   window.speechSynthesis.onvoiceschanged = () => {
     speechSynthesis.getVoices();
   };
-
-  // Create a div for the final reward link
-  linkContainer = createDiv('');
-  linkContainer.id('link-container');
-  linkContainer.style('text-align', 'center');
-  linkContainer.style('margin-top', '20px');
 }
 
 function draw() {
@@ -86,12 +79,17 @@ function draw() {
     text("Tap to go to next question", width / 2, height - 50);
   }
 
+  // ✅ Show link inside canvas
   if (showLink) {
     fill(0, 102, 204);
     textSize(20);
-    text("🎉 You unlocked a bonus!", width / 2, height - 120);
+    text("🎉 Tap below to claim your reward:", width / 2, height - 140);
+
+    fill(0, 0, 255);
+    text("👉 Go to Secret Page 👈", width / 2, height - 100);
   }
 
+  // ✨ Particle effect
   for (let i = particles.length - 1; i >= 0; i--) {
     particles[i].update();
     particles[i].show();
@@ -126,6 +124,18 @@ function handleTimer() {
 function mousePressed() {
   let userResponses = userResponsesMap[currentQuestionIndex];
 
+  // ✅ Check if user tapped the reward link
+  if (
+    showLink &&
+    mouseX > width / 2 - 150 &&
+    mouseX < width / 2 + 150 &&
+    mouseY > height - 120 &&
+    mouseY < height - 80
+  ) {
+    window.open(rewardLink, "_blank");
+    return;
+  }
+
   if (gameState === "ask") {
     currentResponseIndex = (currentResponseIndex + 1) % userResponses.length;
 
@@ -151,15 +161,11 @@ function mousePressed() {
     lastSecond = millis();
     gameState = "ask";
 
-    // ✅ Show the link ONLY after 5 questions (when index wraps back to 0)
+    // ✅ Show link after 5 questions (when index loops to 0)
     if (currentQuestionIndex === 0 && !showLink) {
       showLink = true;
       linkJustUnlocked = true;
       unlockSound.play();
-
-      if (linkContainer) {
-        linkContainer.html(`<a href="${rewardLink}" target="_blank" style="font-size:18px; color:#0000ee; text-decoration:underline;">👉 Go to Secret Page 👈</a>`);
-      }
 
       for (let i = 0; i < 100; i++) {
         particles.push(new Particle(width / 2, height - 100));
