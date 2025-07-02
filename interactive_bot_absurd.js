@@ -30,7 +30,7 @@ let rewardLink = "https://sbuckius.github.io/women_technology_work_quiz/";
 
 let unlockSound;
 let particles = [];
-let linkElem;
+let linkContainer;
 
 function preload() {
   soundFormats('mp3', 'wav');
@@ -47,16 +47,11 @@ function setup() {
     speechSynthesis.getVoices();
   };
 
-  // Create actual clickable link (hidden at first)
-  linkElem = createA(rewardLink, "👉 Go to Secret Page 👈", "_blank");
-  linkElem.id("reward-link");
-  linkElem.hide();
-  linkElem.style("font-size", "18px");
-  linkElem.style("display", "block");
-  linkElem.style("text-align", "center");
-  linkElem.style("margin", "20px auto");
-  linkElem.style("color", "#0000ee");
-  linkElem.style("text-decoration", "underline");
+  // Create a div where we'll insert the final reward link
+  linkContainer = createDiv('');
+  linkContainer.id('link-container');
+  linkContainer.style('text-align', 'center');
+  linkContainer.style('margin-top', '20px');
 }
 
 function draw() {
@@ -196,7 +191,9 @@ function updateBadges() {
     linkJustUnlocked = true;
     unlockSound.play();
 
-    if (linkElem) linkElem.show();
+    if (linkContainer) {
+      linkContainer.html(`<a href="${rewardLink}" target="_blank" style="font-size:18px; color:#0000ee; text-decoration:underline;">👉 Go to Secret Page 👈</a>`);
+    }
 
     for (let i = 0; i < 100; i++) {
       particles.push(new Particle(width / 2, height - 100));
