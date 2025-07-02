@@ -37,7 +37,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(700, 500);
+  createCanvas(windowWidth, windowHeight);
   textAlign(CENTER, CENTER);
   textSize(22);
   lastSecond = millis();
