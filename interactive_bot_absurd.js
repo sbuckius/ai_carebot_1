@@ -24,10 +24,13 @@ let lastSecond = 0;
 let score = 0;
 let badges = [];
 
+let questionsAnswered = 0;
 let showLink = false;
 let rewardLink = "https://sbuckius.github.io/women_technology_work_quiz/";
+
 let unlockSound;
 let particles = [];
+let rewardLinkElem;
 
 function preload() {
   soundFormats('mp3', 'wav');
@@ -43,16 +46,29 @@ function setup() {
   window.speechSynthesis.onvoiceschanged = () => {
     speechSynthesis.getVoices();
   };
+
+  // ✅ Create a real HTML link, hidden at first
+  rewardLinkElem = createA(rewardLink, "👉 Go to Secret Page 👈", "_blank");
+  rewardLinkElem.style("display", "none");
+  rewardLinkElem.style("font-size", "20px");
+  rewardLinkElem.style("text-align", "center");
+  rewardLinkElem.style("margin-top", "20px");
+  rewardLinkElem.style("display", "block");
+  rewardLinkElem.style("color", "#0000ee");
+  rewardLinkElem.style("text-decoration", "underline");
 }
 
 function draw() {
   background(240);
-  drawHUD();
 
-  let question = questions[currentQuestionIndex];
-  let userResponses = userResponsesMap[currentQuestionIndex];
+  if (questionsAnswered < 5) {
+    drawHUD();
+  }
 
-  if (gameState === "ask") {
+  if (gameState === "ask" && questionsAnswered < 5) {
+    let question = questions[currentQuestionIndex];
+    let userResponses = userResponsesMap[currentQuestionIndex];
+
     fill(0);
     text("AI Bot asks:", width / 2, 60);
     text(`"${question}"`, width / 2, 100);
@@ -68,6 +84,7 @@ function draw() {
     handleTimer();
 
   } else if (gameState === "reply") {
+    let userResponses = userResponsesMap[currentQuestionIndex];
     fill(0);
     text("You said:", width / 2, 80);
     text(`"${userResponses[currentResponseIndex]}"`, width / 2, 120);
@@ -75,19 +92,6 @@ function draw() {
     text(`"${botReply}"`, width / 2, 250);
     fill(120);
     text("Tap to go to next question", width / 2, height - 50);
-  }
-
-  // ✅ Draw the link as canvas text
-  if (showLink) {
-    fill(0, 102, 204);
-    textSize(20);
-    text("🎉 Tap below to claim your reward:", width / 2, height - 140);
-
-    fill(0, 0, 255);
-    text("👉 Go to Secret Page 👈", width / 2, height - 100);
-    noFill();
-    stroke(0, 0, 255);
-    rect(width / 2 - 150, height - 120, 300, 40); // visual tap box
   }
 
   for (let i = particles.length - 1; i >= 0; i--) {
@@ -122,18 +126,6 @@ function handleTimer() {
 }
 
 function mousePressed() {
-  // ✅ Link tap detection
-  if (
-    showLink &&
-    mouseX > width / 2 - 150 &&
-    mouseX < width / 2 + 150 &&
-    mouseY > height - 120 &&
-    mouseY < height - 80
-  ) {
-    window.open(rewardLink, "_blank");
-    return;
-  }
-
   let userResponses = userResponsesMap[currentQuestionIndex];
 
   if (gameState === "ask") {
@@ -153,21 +145,30 @@ function mousePressed() {
     }
 
   } else if (gameState === "reply") {
-    currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
-    currentResponseIndex = 0;
-    botReply = "";
-    botMood = "";
-    timer = 10;
-    lastSecond = millis();
-    gameState = "ask";
+    questionsAnswered++;
 
-    // ✅ After 5 questions, trigger link
-    if (currentQuestionIndex === 0 && !showLink) {
+    if (questionsAnswered >= 5 && !showLink) {
       showLink = true;
       unlockSound.play();
+
+      // ✅ Show real HTML link now
+      if (rewardLinkElem) {
+        rewardLinkElem.style("display", "block");
+      }
+
       for (let i = 0; i < 100; i++) {
         particles.push(new Particle(width / 2, height - 100));
       }
+    }
+
+    if (questionsAnswered < 5) {
+      currentQuestionIndex++;
+      currentResponseIndex = 0;
+      botReply = "";
+      botMood = "";
+      timer = 10;
+      lastSecond = millis();
+      gameState = "ask";
     }
   }
 }
@@ -210,7 +211,7 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
 
-// 🎆 Particle class
+// ✨ Particle class
 class Particle {
   constructor(x, y) {
     this.pos = createVector(x, y);
