@@ -12,18 +12,25 @@
     html, body {
       margin: 0;
       padding: 0;
-      overflow: hidden;
       background: #f0f0f0;
       font-family: sans-serif;
     }
+
+    #canvas-container {
+      text-align: center;
+      position: relative;
+    }
+
     a {
       font-size: 20px;
       text-align: center;
-      display: block;
+      display: none; /* hidden initially */
       color: #0000ee;
       text-decoration: underline;
     }
   </style>
 </head>
-<body></body>
+<body>
+  <div id="canvas-container"></div>
+</body>
 </html>
