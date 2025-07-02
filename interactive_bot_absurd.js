@@ -25,9 +25,7 @@ let score = 0;
 let badges = [];
 
 let showLink = false;
-let linkJustUnlocked = false;
 let rewardLink = "https://sbuckius.github.io/women_technology_work_quiz/";
-
 let unlockSound;
 let particles = [];
 
@@ -79,7 +77,7 @@ function draw() {
     text("Tap to go to next question", width / 2, height - 50);
   }
 
-  // ✅ Show link inside canvas
+  // ✅ Draw the link as canvas text
   if (showLink) {
     fill(0, 102, 204);
     textSize(20);
@@ -87,9 +85,11 @@ function draw() {
 
     fill(0, 0, 255);
     text("👉 Go to Secret Page 👈", width / 2, height - 100);
+    noFill();
+    stroke(0, 0, 255);
+    rect(width / 2 - 150, height - 120, 300, 40); // visual tap box
   }
 
-  // ✨ Particle effect
   for (let i = particles.length - 1; i >= 0; i--) {
     particles[i].update();
     particles[i].show();
@@ -122,9 +122,7 @@ function handleTimer() {
 }
 
 function mousePressed() {
-  let userResponses = userResponsesMap[currentQuestionIndex];
-
-  // ✅ Check if user tapped the reward link
+  // ✅ Link tap detection
   if (
     showLink &&
     mouseX > width / 2 - 150 &&
@@ -135,6 +133,8 @@ function mousePressed() {
     window.open(rewardLink, "_blank");
     return;
   }
+
+  let userResponses = userResponsesMap[currentQuestionIndex];
 
   if (gameState === "ask") {
     currentResponseIndex = (currentResponseIndex + 1) % userResponses.length;
@@ -161,12 +161,10 @@ function mousePressed() {
     lastSecond = millis();
     gameState = "ask";
 
-    // ✅ Show link after 5 questions (when index loops to 0)
+    // ✅ After 5 questions, trigger link
     if (currentQuestionIndex === 0 && !showLink) {
       showLink = true;
-      linkJustUnlocked = true;
       unlockSound.play();
-
       for (let i = 0; i < 100; i++) {
         particles.push(new Particle(width / 2, height - 100));
       }
