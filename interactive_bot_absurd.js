@@ -47,7 +47,7 @@ function setup() {
     speechSynthesis.getVoices();
   };
 
-  // Create a div where we'll insert the final reward link
+  // Create a div to inject the final HTML link
   linkContainer = createDiv('');
   linkContainer.id('link-container');
   linkContainer.style('text-align', 'center');
@@ -150,6 +150,9 @@ function mousePressed() {
     timer = 10;
     lastSecond = millis();
     gameState = "ask";
+
+    // Show link after 5 questions (loop back to 0)
+    updateBadges();
   }
 }
 
@@ -186,7 +189,8 @@ function updateBadges() {
   if (score >= 60 && !badges.includes("Conversationalist")) badges.push("Conversationalist");
   if (score >= 100 && !badges.includes("AI Whisperer")) badges.push("AI Whisperer");
 
-  if (score >= 50 && !showLink) {
+  // Show link only once after all 5 questions completed
+  if (currentQuestionIndex === 0 && !showLink) {
     showLink = true;
     linkJustUnlocked = true;
     unlockSound.play();
