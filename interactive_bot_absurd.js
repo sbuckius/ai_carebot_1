@@ -38,7 +38,9 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  let cnv = createCanvas(windowWidth, windowHeight);
+  cnv.parent('canvas-container'); // Attach canvas to container
+
   textAlign(CENTER, CENTER);
   textSize(22);
   lastSecond = millis();
@@ -49,13 +51,14 @@ function setup() {
 
   // ✅ Create a real HTML link, hidden at first
   rewardLinkElem = createA(rewardLink, "👉 Go to Secret Page 👈", "_blank");
+  rewardLinkElem.parent('canvas-container');
   rewardLinkElem.style("display", "none");
   rewardLinkElem.style("font-size", "20px");
   rewardLinkElem.style("text-align", "center");
-  rewardLinkElem.style("margin-top", "20px");
-  rewardLinkElem.style("display", "block");
+  rewardLinkElem.style("margin", "20px auto");
   rewardLinkElem.style("color", "#0000ee");
   rewardLinkElem.style("text-decoration", "underline");
+  rewardLinkElem.style("display", "block");
 }
 
 function draw() {
@@ -151,7 +154,7 @@ function mousePressed() {
       showLink = true;
       unlockSound.play();
 
-      // ✅ Show real HTML link now
+      // ✅ Reveal the real HTML link
       if (rewardLinkElem) {
         rewardLinkElem.style("display", "block");
       }
