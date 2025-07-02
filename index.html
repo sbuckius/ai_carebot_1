@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="libraries/p5.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.min.js"></script>
   <script src="interactive_bot_absurd.js"></script>
-
   <style>
-    html, body {
+    body {
       margin: 0;
       padding: 0;
       background: #f0f0f0;
       font-family: sans-serif;
-      overflow-x: hidden;
+      text-align: center;
     }
 
     #canvas-container {
-      text-align: center;
       position: relative;
+      text-align: center;
     }
 
-    a {
+    #reward-link {
+      display: none;
+      margin-top: 20px;
       font-size: 20px;
       color: #0000ee;
       text-decoration: underline;
@@ -30,6 +30,10 @@
   </style>
 </head>
 <body>
-  <div id="canvas-container"></div>
+  <div id="canvas-container">
+    <a id="reward-link" href="https://sbuckius.github.io/women_technology_work_quiz/" target="_blank">
+      👉 Go to Secret Page 👈
+    </a>
+  </div>
 </body>
 </html>
