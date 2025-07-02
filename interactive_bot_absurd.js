@@ -47,7 +47,7 @@ function setup() {
     speechSynthesis.getVoices();
   };
 
-  // Create a div to inject the final HTML link
+  // Create a div for the final reward link
   linkContainer = createDiv('');
   linkContainer.id('link-container');
   linkContainer.style('text-align', 'center');
@@ -151,8 +151,20 @@ function mousePressed() {
     lastSecond = millis();
     gameState = "ask";
 
-    // Show link after 5 questions (loop back to 0)
-    updateBadges();
+    // ✅ Show the link ONLY after 5 questions (when index wraps back to 0)
+    if (currentQuestionIndex === 0 && !showLink) {
+      showLink = true;
+      linkJustUnlocked = true;
+      unlockSound.play();
+
+      if (linkContainer) {
+        linkContainer.html(`<a href="${rewardLink}" target="_blank" style="font-size:18px; color:#0000ee; text-decoration:underline;">👉 Go to Secret Page 👈</a>`);
+      }
+
+      for (let i = 0; i < 100; i++) {
+        particles.push(new Particle(width / 2, height - 100));
+      }
+    }
   }
 }
 
@@ -188,21 +200,6 @@ function updateBadges() {
   if (score >= 30 && !badges.includes("Listener")) badges.push("Listener");
   if (score >= 60 && !badges.includes("Conversationalist")) badges.push("Conversationalist");
   if (score >= 100 && !badges.includes("AI Whisperer")) badges.push("AI Whisperer");
-
-  // Show link only once after all 5 questions completed
-  if (currentQuestionIndex === 0 && !showLink) {
-    showLink = true;
-    linkJustUnlocked = true;
-    unlockSound.play();
-
-    if (linkContainer) {
-      linkContainer.html(`<a href="${rewardLink}" target="_blank" style="font-size:18px; color:#0000ee; text-decoration:underline;">👉 Go to Secret Page 👈</a>`);
-    }
-
-    for (let i = 0; i < 100; i++) {
-      particles.push(new Particle(width / 2, height - 100));
-    }
-  }
 }
 
 function windowResized() {
