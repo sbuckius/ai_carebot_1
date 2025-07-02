@@ -18,19 +18,14 @@ let gameState = "ask";
 let currentQuestionIndex = 0;
 let currentResponseIndex = 0;
 let botReply = "", botMood = "";
-
 let timer = 10;
 let lastSecond = 0;
 let score = 0;
 let badges = [];
-
 let questionsAnswered = 0;
 let showLink = false;
-let rewardLink = "https://sbuckius.github.io/women_technology_work_quiz/";
-
 let unlockSound;
 let particles = [];
-let rewardLinkElem;
 
 function preload() {
   soundFormats('mp3', 'wav');
@@ -39,26 +34,10 @@ function preload() {
 
 function setup() {
   let cnv = createCanvas(windowWidth, windowHeight);
-  cnv.parent('canvas-container'); // Attach canvas to container
-
+  cnv.parent('canvas-container');
   textAlign(CENTER, CENTER);
   textSize(22);
   lastSecond = millis();
-
-  window.speechSynthesis.onvoiceschanged = () => {
-    speechSynthesis.getVoices();
-  };
-
-  // ✅ Create a real HTML link, hidden at first
-  rewardLinkElem = createA(rewardLink, "👉 Go to Secret Page 👈", "_blank");
-  rewardLinkElem.parent('canvas-container');
-  rewardLinkElem.style("display", "none");
-  rewardLinkElem.style("font-size", "20px");
-  rewardLinkElem.style("text-align", "center");
-  rewardLinkElem.style("margin", "20px auto");
-  rewardLinkElem.style("color", "#0000ee");
-  rewardLinkElem.style("text-decoration", "underline");
-  rewardLinkElem.style("display", "block");
 }
 
 function draw() {
@@ -154,10 +133,8 @@ function mousePressed() {
       showLink = true;
       unlockSound.play();
 
-      // ✅ Reveal the real HTML link
-      if (rewardLinkElem) {
-        rewardLinkElem.style("display", "block");
-      }
+      let linkEl = document.getElementById("reward-link");
+      if (linkEl) linkEl.style.display = "block";
 
       for (let i = 0; i < 100; i++) {
         particles.push(new Particle(width / 2, height - 100));
