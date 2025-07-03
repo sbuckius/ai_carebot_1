@@ -41,7 +41,7 @@ function setup() {
 }
 
 function draw() {
-  background(240);
+  background(183, 22, 57);
 
   if (questionsAnswered < 5) {
     drawHUD();
